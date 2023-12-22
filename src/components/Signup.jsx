@@ -2,6 +2,11 @@ import { React,useState } from "react";
 import Modal from './Modal'
 import {useNavigate} from "react-router-dom";
 import Loading from "./Loading";
+import { FaLaptopCode } from "react-icons/fa6";
+import { FaArrowTrendUp } from "react-icons/fa6";
+import { FaRegCheckSquare } from "react-icons/fa";
+import { SiLeetcode } from "react-icons/si";
+import { GiBrain } from "react-icons/gi";
 const BACKEND = process.env.REACT_APP_BACKEND
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -48,6 +53,18 @@ function Login() {
       ) : (
         <>
         {error&&<Modal content={error}/>}
+            <div className="home-auth">
+            <div className="home-left">
+                <img src="/assets/home.png" alt="" />
+                <p className="home-text">
+                <h2><FaLaptopCode style={{color:"white"}}/> Quality leetcode questions</h2>
+                    <h2><FaArrowTrendUp style={{color:"white"}}/> A topic wise list to rate up faster</h2>
+                    <h2><FaRegCheckSquare style={{color:"white"}}/> Progress tracker, with check/uncheck feature</h2>
+                    <h2><SiLeetcode style={{color:"white"}}/> Suitable for 1800+ rated folks</h2>
+                    <h2><GiBrain style={{color:"white"}}/> Only medium - hard questions included</h2>
+                </p>
+            </div>
+            <div className="home-right">
           <div className="home-container">
             <img src={"/assets/logo.png"} alt="logo" />
             <h2 className="title">LeetLadders</h2>
@@ -71,6 +88,8 @@ function Login() {
             <div className="bottom-content">
                 Already a user ? <span onClick={()=>navigate('/login')}>Sign In</span>
             </div>
+          </div>
+          </div>
           </div>
         </>
       )}
