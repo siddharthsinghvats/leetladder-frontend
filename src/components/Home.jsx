@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
+import { FaDiscord } from "react-icons/fa";
 import { MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import Loading from "./Loading";
 const user = JSON.parse(localStorage.getItem("user"));
 console.log(user);
-const BACKEND = process.env.REACT_APP_BACKEND
+const BACKEND = process.env.REACT_APP_BACKEND;
 console.log(BACKEND);
 const Home = () => {
   const [questionsByType, setQuestionsByType] = useState({});
@@ -18,14 +19,14 @@ const Home = () => {
 
   useEffect(() => {
     if (!currentUser) {
-      fetch(BACKEND + '/auth/'+user?.username)
+      fetch(BACKEND + "/auth/" + user?.username)
         .then((response) => response.json())
         .then((user) => {
           setCurrentUser(user.user);
         });
     }
     let cnt = 0;
-    fetch(BACKEND+"/questions")
+    fetch(BACKEND + "/questions")
       .then((response) => response.json())
       .then((questions) => {
         const groupedAllQuestions = questions.reduce((acc, question) => {
@@ -37,7 +38,7 @@ const Home = () => {
           return acc;
         }, {});
         setAllQuestionCount(cnt);
-        cnt=0;
+        cnt = 0;
         if (currentUser) {
           const groupedDoneQuestions = questions.reduce((acc, question) => {
             if (currentUser.doneQuestions.includes(question._id)) {
@@ -62,50 +63,68 @@ const Home = () => {
   }, [currentUser]);
   return (
     <>
-      {loading?<Loading/>:
-      <>
-      <div className="logout" onClick={()=>{
-        localStorage.clear('user');
-        window.location.reload();
-      }}>Logout</div>
-      <div className="home-container">
-        <img src={"/assets/logo.png"} alt="logo" />
-        <h2 className="title">LeetLadders</h2>
-      </div>
-      <MDBProgress height="7" style={{ width: "80%", margin: "0 auto" }}>
-        <MDBProgressBar
-          width={Math.round((doneQuestionCount / allQuestionCount) * 100)}
-          style={{ backgroundColor: "#3ac90f" }}
-          valuemin={0}
-          valuemax={100}
-        ></MDBProgressBar>
-      </MDBProgress>
-      <div className="value">
-        <span>{doneQuestionCount} / {allQuestionCount}</span>
-        
-        <span>{Math.round((doneQuestionCount / allQuestionCount) * 100)}% completed</span>
-        
-      </div>
-      <div className="home">
-        {Object.keys(questionsByType).map((type) => (
-          //   <div key={type} className='home'>
-          <Card
-            card={{
-              type: type,
-              totalQuestions: questionsByType[type].length,
-              img: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Binary_tree_v2.svg",
-              doneQuestions: doneQuestionsByType[type]
-                ? doneQuestionsByType[type].length
-                : 0,
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div
+            className="logout"
+            onClick={() => {
+              localStorage.clear("user");
+              window.location.reload();
             }}
-          />
-        ))}
-      </div>
-      <div className="footer">
-        Made by <a href="https://leetcode.com/neembu_mirch/">Neembu_Mirch</a>
-      </div>
-      </>
-}
+          >
+            Logout
+          </div>
+          <div className="home-container">
+            <img src={"/assets/logo.png"} alt="logo" />
+            <h2 className="title">LeetLadders</h2>
+          </div>
+          <MDBProgress height="7" style={{ width: "80%", margin: "0 auto" }}>
+            <MDBProgressBar
+              width={Math.round((doneQuestionCount / allQuestionCount) * 100)}
+              style={{ backgroundColor: "#3ac90f" }}
+              valuemin={0}
+              valuemax={100}
+            ></MDBProgressBar>
+          </MDBProgress>
+          <div className="value">
+            <span>
+              {doneQuestionCount} / {allQuestionCount}
+            </span>
+
+            <span>
+              {Math.round((doneQuestionCount / allQuestionCount) * 100)}%
+              completed
+            </span>
+          </div>
+          <div className="home">
+            {Object.keys(questionsByType).map((type) => (
+              //   <div key={type} className='home'>
+              <Card
+                card={{
+                  type: type,
+                  totalQuestions: questionsByType[type].length,
+                  img: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Binary_tree_v2.svg",
+                  doneQuestions: doneQuestionsByType[type]
+                    ? doneQuestionsByType[type].length
+                    : 0,
+                }}
+              />
+            ))}
+          </div>
+          <div className="footer">
+            <span>
+              {" "}
+              Made by{" "}
+              <a href="https://leetcode.com/neembu_mirch/">Neembu_Mirch </a>
+            </span>
+            <span>
+              <FaDiscord /> alchemist#5784
+            </span>
+          </div>
+        </>
+      )}
     </>
   );
 };

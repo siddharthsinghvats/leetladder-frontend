@@ -1,24 +1,80 @@
-import { React,useState } from "react";
-import Modal from './Modal'
-import {useNavigate} from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import { FaLaptopCode } from "react-icons/fa6";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaRegCheckSquare } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import { GiBrain } from "react-icons/gi";
-const BACKEND = process.env.REACT_APP_BACKEND
+
+import CountUp from 'react-countup';
+
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 function Login() {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [red, setRed] = useState(1);
+  const [quesCount, setQuesCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [userExists, setUserExists] = useState(false);
+  // Password strength checker function
+  const checkPasswordStrength = (password) => {
+    if (password.length < 6) {
+      setRed(1);
+      return "Password must be at least 6 characters long.";
+    }
+
+    let hasLetter = /[a-zA-Z]/.test(password);
+    let hasNumber = /\d/.test(password);
+    let hasSpecialCharacter = /[^a-zA-Z\d]/.test(password);
+
+    if (hasLetter && hasNumber && hasSpecialCharacter) {
+      setRed(0);
+      return "OK - Strong Password";
+    }
+    setRed(1);
+    let missingCriteria = [];
+
+    if (!hasLetter) {
+      missingCriteria.push("letters");
+    }
+
+    if (!hasNumber) {
+      missingCriteria.push("numbers");
+    }
+
+    if (!hasSpecialCharacter) {
+      missingCriteria.push("special characters");
+    }
+
+    return `Password should include ${missingCriteria.join(", ")}.`;
+  };
+
+  const handlePassChange = (e) => {
+    setPassword(e.target.value);
+    const strength = checkPasswordStrength(e.target.value);
+    setPasswordMessage(strength);
+  };
+  const handleUsernameChange = async (e) => {
+    setUsername(e.target.value);
+    if (!e.target.value) return;
+    if (e.target.value.length == 0) return;
+    const user = await fetch(BACKEND + "/auth/" + e.target.value);
+    if (user.ok) {
+      setUserExists(true);
+    } else setUserExists(false);
+  };
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
     try {
-      const response = await fetch(BACKEND+"/auth/signup", {
+      const response = await fetch(BACKEND + "/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +82,7 @@ function Login() {
         body: JSON.stringify({ username, password }),
       });
       console.log(response);
-      if(response.status==409){
+      if (response.status == 409) {
         setLoading(false);
         setError("Username already exists");
         return;
@@ -38,58 +94,116 @@ function Login() {
         console.log("Signup successful");
         localStorage.setItem("user", JSON.stringify(user.user));
         window.location.reload();
-      } 
+      }
     } catch (error) {
-        setLoading(false);
-        setError("Server Error");
-
+      setLoading(false);
+      setError("Server Error");
     }
   };
 
+
+  useEffect(()=>{
+    fetch(BACKEND + '/questions/all_question_count')
+        .then((response) => response.json())
+        .then((count) => {
+          setQuesCount(count.count);
+    });
+    fetch(BACKEND + '/auth/count/total_user')
+        .then((response) => response.json())
+        .then((count) => {
+          setUserCount(count.userCount);
+    });
+ },[quesCount])
   return (
     <>
       {loading ? (
-        <Loading/>
+        <Loading />
       ) : (
         <>
-        {error&&<Modal content={error}/>}
-            <div className="home-auth">
+          {error && <Modal content={error} />}
+          <div className="home-auth">
             <div className="home-left">
-                <img src="/assets/home.png" alt="" />
-                <p className="home-text">
-                <h2><FaLaptopCode style={{color:"white"}}/> Quality leetcode questions</h2>
-                    <h2><FaArrowTrendUp style={{color:"white"}}/> A topic wise list to rate up faster</h2>
-                    <h2><FaRegCheckSquare style={{color:"white"}}/> Progress tracker, with check/uncheck feature</h2>
-                    <h2><SiLeetcode style={{color:"white"}}/> Suitable for 1800+ rated folks</h2>
-                    <h2><GiBrain style={{color:"white"}}/> Only medium - hard questions included</h2>
-                </p>
+              <img src="/assets/home.png" alt="" />
+              <p className="home-text">
+                <h2>
+                  <FaLaptopCode style={{ color: "white" }} /> Quality leetcode
+                  questions
+                </h2>
+                <h2>
+                  <FaArrowTrendUp style={{ color: "white" }} /> A topic wise
+                  list to rate up faster
+                </h2>
+                <h2>
+                  <FaRegCheckSquare style={{ color: "white" }} /> Progress
+                  tracker, with check/uncheck feature
+                </h2>
+                <h2>
+                  <SiLeetcode style={{ color: "white" }} /> Suitable for 1800+
+                  rated folks
+                </h2>
+                <h2>
+                  <GiBrain style={{ color: "white" }} /> Only medium - hard
+                  questions included
+                </h2>
+              </p>
             </div>
             <div className="home-right">
-          <div className="home-container">
-            <img src={"/assets/logo.png"} alt="logo" />
-            <h2 className="title">LeetLadders</h2>
-          </div>
-          <div className="form">
-            <div className="input">
-              <input
-                type="text"
-                value={username}
-                placeholder="A unique username"
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              <input
-                type="password"
-                value={password}
-                placeholder="password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button className="btn" onClick={(e)=>handleSubmit(e)}> Sign Up</button>
+              <div className="home-container">
+                <img src={"/assets/logo.png"} alt="logo" />
+                <h2 className="title">LeetLadders</h2>
+              </div>
+              <div className="form">
+                <div className="input">
+                  <input
+                    type="text"
+                    value={username}
+                    placeholder="A unique username"
+                    onChange={(e) => handleUsernameChange(e)}
+                  />
+                  <span
+                    style={{
+                      display: username.length != 0 ? "inline" : "none",
+                      fontSize: "1.2rem",
+                      color:userExists?"#f74d4d" : "#69f74d"
+                    }}
+                  >
+                    {userExists
+                      ? "Username already exists"
+                      : "Username available"}
+                  </span>
+                  <input
+                    type="password"
+                    value={password}
+                    placeholder="password"
+                    onChange={(e) => handlePassChange(e)}
+                  />
+                  <span
+                    style={{
+                      color: red === 1 ? "#f74d4d" : "#69f74d",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    {passwordMessage}
+                  </span>
+                  <button
+                    className="btn"
+                    disabled={red === 1 || userExists}
+                    onClick={(e) => handleSubmit(e)}
+                  >
+                    {" "}
+                    Sign Up
+                  </button>
+                </div>
+                <div className="bottom-content">
+                  Already a user ?{" "}
+                  <span onClick={() => navigate("/login")}>Sign In</span>
+                </div>
+                <div className="home-stat">
+                    <h2> <CountUp style={{fontSize:"larger",color:"#79fc91"}} end={quesCount}/> total questions </h2>
+                    <h2><CountUp style={{fontSize:"larger",color:"#79fc91"}} end={userCount}/>  users registered </h2>
+                </div>
+              </div>
             </div>
-            <div className="bottom-content">
-                Already a user ? <span onClick={()=>navigate('/login')}>Sign In</span>
-            </div>
-          </div>
-          </div>
           </div>
         </>
       )}

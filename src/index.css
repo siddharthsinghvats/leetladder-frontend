@@ -65,7 +65,7 @@ font-family: 'Roboto Mono', monospace;
 .form{
   display: flex;
   flex-direction: column;
-  padding:5rem 1rem;
+  padding:3rem 1rem;
 }
 
 .question{
@@ -241,10 +241,12 @@ button:active {
   /* set time duration to your needs */
   animation: gradient 100ms;
   background: rgb(61, 204, 190);
-  color: #fff;
+  color: #130e0e;
   box-shadow: none;
 }
-
+.btn:hover{
+  color: #596cff !important;
+}
 .cross{
   margin-left: auto;
   margin-top:5px;
@@ -312,10 +314,15 @@ button:active {
 
 .footer{
   padding:2rem;
+  margin: 1rem auto;
   letter-spacing: 2px;
   color: #39e9e0;
-  font-size: larger;
-  
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid rgb(86, 85, 85);
+  width:90%;
 }
 
 .home-card:hover{
