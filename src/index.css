@@ -451,6 +451,9 @@ button:active {
   .input input{
     width:80%;
   }
+  .value{
+    font-size: 1.4rem;
+  }
   .btn{
     width:80%;
   }
