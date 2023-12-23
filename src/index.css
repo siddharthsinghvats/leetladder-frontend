@@ -50,9 +50,9 @@ font-family: 'Roboto Mono', monospace;
   overflow: hidden;
 }
 .right img{
-  min-width: 14rem;
-  max-width:14rem;
-  overflow: hidden;
+  min-width: 71%;
+  max-width:71%;
+ 
 }
 
 .login{
@@ -106,6 +106,9 @@ a{
 .progress-container{
   width:85%;
 }
+.progress-container span{
+  font-size: 1.2rem;
+}
 input[type="checkbox"] {
   min-width: 1.5em;
   min-height: 1.5rem;
@@ -141,9 +144,13 @@ font-size: 5rem !important;
 }
 
 .value{
-  margin-top:10px;
-  font-size: 1.6rem;
+  width:80%;
+  margin:15px auto;
+  font-size: 1.8rem;
   color: rgb(56, 233, 174);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .topic-title{
@@ -345,6 +352,27 @@ button:active {
   font-size: 1.6rem;
 }
 
+.home-stat{
+  margin-top: 3rem;
+  font-family: 'Roboto Mono', monospace;
+  text-align: center;
+}
+.home-stat h2{
+  margin:1rem 0;
+}
+
+.done-by-total{
+  font-size: 2.2rem;
+  margin: 1rem 0;
+}
+.by{
+  font-size: 2.8rem;
+  color: #02e3d4;
+}
+
+/* --------------------------------------------------------------------------------------------------------- */
+/* media queries */
+
 @media (max-width:1340px) {
   .input input{
     width:40%;
@@ -434,12 +462,6 @@ button:active {
   .question-list{
     padding: 2rem;
   }
-  .left h2{
-    font-size: 1.6rem;
-  }
-  .left h4{
-    font-size: 1.3rem;
-  }
   .home-text h2{
     margin:2rem 0;
     font-size: 1.1rem;
@@ -475,12 +497,9 @@ button:active {
     max-width: 60%;
 
   }
-  .left h2{
-    font-size: 1.4rem;
-  }
-  .left h4{
-    font-size: 1rem;
-  }
+.right img{
+  width: 100%;
+}
   .progress{
     height:4px !important;
   }

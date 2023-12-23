@@ -81,7 +81,10 @@ const Home = () => {
         ></MDBProgressBar>
       </MDBProgress>
       <div className="value">
-        {Math.round((doneQuestionCount / allQuestionCount) * 100)}% completed
+        <span>{doneQuestionCount} / {allQuestionCount}</span>
+        
+        <span>{Math.round((doneQuestionCount / allQuestionCount) * 100)}% completed</span>
+        
       </div>
       <div className="home">
         {Object.keys(questionsByType).map((type) => (

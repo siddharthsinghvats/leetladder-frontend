@@ -17,10 +17,9 @@ export default function TopicCard({ card }) {
     <div className="home-card" onClick={() => navigate("/topics/" + type)}>
       <div className="left">
         <h2>{card.type}</h2>
-        <h4>Total Questions:{card.totalQuestions}</h4>
-        <h4>Done Questions :{card.doneQuestions}</h4>
+        <h4 className="done-by-total">{card.doneQuestions}<span className="by">/</span>{card.totalQuestions}</h4>
         <div className="progress-container">
-        <MDBProgress height="20" >
+        <MDBProgress height="10" >
           <MDBProgressBar width={Math.round(card.doneQuestions/card.totalQuestions*100)} style={{backgroundColor:"#3ac96c"}} valuemin={0} valuemax={100}>
           </MDBProgressBar>
         </MDBProgress>

@@ -1,6 +1,6 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Modal from "./Modal";
-
+import CountUp from 'react-countup';
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import { FaLaptopCode } from "react-icons/fa6";
@@ -16,6 +16,8 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [quesCount, setQuesCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -46,7 +48,18 @@ function Login() {
       setError("Server Error");
     }
   };
-
+ useEffect(()=>{
+    fetch(BACKEND + '/questions/all_question_count')
+        .then((response) => response.json())
+        .then((count) => {
+          setQuesCount(count.count);
+    });
+    fetch(BACKEND + '/auth/count/total_user')
+        .then((response) => response.json())
+        .then((count) => {
+          setUserCount(count.userCount);
+    });
+ },[quesCount])
   return (
     <>
       {loading ? (
@@ -94,6 +107,10 @@ function Login() {
                 <div className="bottom-content">
                   New here ?{" "}
                   <span onClick={() => navigate("/signup")}>Sign Up</span>
+                </div>
+                <div className="home-stat">
+                    <h2> <CountUp style={{fontSize:"larger",color:"#79fc91"}} end={quesCount}/> total questions </h2>
+                    <h2><CountUp style={{fontSize:"larger",color:"#79fc91"}} end={userCount}/>  users registered </h2>
                 </div>
               </div>
             </div>
