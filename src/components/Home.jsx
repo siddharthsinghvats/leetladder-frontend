@@ -120,7 +120,7 @@ const Home = () => {
               <a href="https://leetcode.com/neembu_mirch/">Neembu_Mirch </a>
             </span>
             <span>
-              <FaDiscord /> alchemist#5784
+              <FaDiscord /> {" "}alchemist#5784
             </span>
           </div>
         </>
