@@ -120,7 +120,7 @@ const Topic = () => {
           {params.type}
           <h4>{doneQuestionsByType.length}/{questionsByType.length}</h4>
         </h2>
-        {questionsByType?.map((question) => {
+        {questionsByType?.map((question,index) => {
           return (
             <div
               className={
@@ -129,7 +129,7 @@ const Topic = () => {
                   : "question"
               }
             >
-              <a href={question.link}>{question.questionName}</a>
+              <a href={question.link} target="_blank">{index}. {question.questionName}</a>
               <input
                 className="check"
                 type="checkbox"

@@ -69,13 +69,14 @@ font-family: 'Roboto Mono', monospace;
 }
 
 .question{
-  border-bottom:1px solid rgb(87, 86, 86);
+  border-bottom:1px solid rgba(87, 86, 86, 0.436);
   width:70%;
-  padding:10px 20px;
+  padding:16px 20px;
   display: flex;
   align-items:center;
   justify-content: space-between;
   text-align: left;
+  font-size: 1.3rem;
 
 }
 .bg-green{
@@ -465,6 +466,7 @@ button:active {
   }
   .question{
     width:95%;
+    font-size: 1rem;
   }
   .question-list{
     padding: 2rem;
