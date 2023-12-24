@@ -143,6 +143,26 @@ font-size: 5rem !important;
   margin-right: 1rem;
   border-radius: 50%;
 }
+.home-container h3{
+position: fixed;
+right:3rem;
+border:0.5px solid rgb(160, 159, 159);
+z-index: 10;
+font-size: 1.3rem;
+padding: 10px;
+color: #fef575;
+background-color: #1f1e1e97;
+cursor: pointer;
+border-radius: 7px;
+
+}
+.home-container h3:hover{
+
+  border:0.5px solid rgb(209, 207, 207);
+  box-shadow: 0 4px 8px 0 rgba(240, 255, 79, 0.2), 
+  0 6px 20px 0 rgba(248, 247, 247, 0.19);  
+  
+  }
 
 .value{
   width:80%;
@@ -277,6 +297,8 @@ button:active {
 .go-to-main{
   cursor: pointer;
   color: #8b8b8b;
+  font-size: larger;
+  padding: 1rem 0;
 }
 .go-to-main:hover{
   color:#acadac;
@@ -295,13 +317,33 @@ button:active {
   right:0.8rem;
   padding: 10px 15px;
   border:1px solid rgb(129, 128, 128);
-  color: #a8a8a9;
+  color: #e2e2e2;
   border-radius: 10px;
   z-index:10;
   cursor: pointer;
   background-color: #353535d6;
 }
-
+.logout:hover{
+  box-shadow: 0 4px 8px 0 rgba(240, 255, 79, 0.2), 
+  0 6px 20px 0 rgba(248, 247, 247, 0.19);  
+  color: #f1f891;
+  border:0.3px solid white;
+}
+.profile{
+  height: 100vh;
+  font-family: 'Josefin Sans', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
+  font-family: 'Roboto Mono', monospace;
+}
+.profile h1{
+  color: #8dfbf4;
+  padding: 2rem 0;
+  border-bottom: 0.3px solid rgb(102, 100, 100);
+}
+.chart-cnt{
+  font-size: 1.8rem;
+  color: wheat;
+}
 .bottom-content{
   margin-top:20px;
   color: #9e9e9f;

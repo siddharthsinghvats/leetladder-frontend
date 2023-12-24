@@ -3,19 +3,20 @@ import Card from "./Card";
 import { FaDiscord } from "react-icons/fa";
 import { MDBProgress, MDBProgressBar } from "mdb-react-ui-kit";
 import Loading from "./Loading";
+import Profile from "./Profile";
+import { useNavigate } from "react-router";
 const user = JSON.parse(localStorage.getItem("user"));
 console.log(user);
 const BACKEND = process.env.REACT_APP_BACKEND;
 console.log(BACKEND);
 const Home = () => {
+    const navigate = useNavigate();
   const [questionsByType, setQuestionsByType] = useState({});
   const [doneQuestionsByType, setDoneQuestionsByType] = useState({});
   const [currentUser, setCurrentUser] = useState();
   const [allQuestionCount, setAllQuestionCount] = useState(0);
   const [doneQuestionCount, setDoneQuestionCount] = useState(0);
   const [loading, setLoading] = useState(true);
-  console.log(doneQuestionCount);
-  console.log(allQuestionCount);
 
   useEffect(() => {
     if (!currentUser) {
@@ -79,6 +80,7 @@ const Home = () => {
           <div className="home-container">
             <img src={"/assets/logo.png"} alt="logo" />
             <h2 className="title">LeetLadders</h2>
+            <h3 onClick={()=>navigate('/profile')}>Profile</h3>
           </div>
           <MDBProgress height="7" style={{ width: "80%", margin: "0 auto" }}>
             <MDBProgressBar
