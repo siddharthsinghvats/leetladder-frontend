@@ -113,20 +113,20 @@ const navigate = useNavigate();
       {loading ? (
         <Loading />
       ) : (
-        doneQuestionCount !== 0 && (
+        (
           <>
             <div className="go-to-main" onClick={() => navigate("/")}>
               Home
             </div>
 
             <h1>{currentUser?.username}</h1>
-            <Chart
+           { doneQuestionCount&&<Chart
               chartType="ColumnChart"
               width="100%"
               height="100%"
               data={data}
               options={options}
-            />
+            />}
             <span className="chart-cnt">
               {doneQuestionCount}/{allQuestionCount}
             </span>
