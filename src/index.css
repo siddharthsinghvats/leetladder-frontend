@@ -531,6 +531,11 @@ button:active {
   .footer span{
     margin:10px 0;
   }
+  .home-container h3{
+    top:5PX;
+    right:5px;
+    font-size: SMALL;
+  }
 }
 
 @media (max-width:520px) {
