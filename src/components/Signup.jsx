@@ -186,7 +186,7 @@ function Login() {
                   <input
                     type="text"
                     value={username}
-                    placeholder="A unique username"
+                    placeholder="Username (Case Sensitive)"
                     onChange={(e) => handleUsernameChange(e)}
                   />
                   <span
