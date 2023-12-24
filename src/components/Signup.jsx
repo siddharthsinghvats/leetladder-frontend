@@ -19,6 +19,7 @@ function Login() {
   const [red, setRed] = useState(1);
   const [quesCount, setQuesCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
+  const [allUsers, setAllUsers] = useState();
   const [passwordMessage, setPasswordMessage] = useState("");
   const [usernameMessage, setUsernameMessage] = useState({});
   const [userExists, setUserExists] = useState(false);
@@ -90,11 +91,7 @@ function Login() {
   const handleUsernameChange = async (e) => {
     setUsername(e.target.value.trim());
     setUsernameMessage(checkUsername(e.target.value.trim()));
-    if(!usernameMessage.isValid) return;
-    if (!e.target.value) return;
-    if (e.target.value.length == 0) return;
-    const user = await fetch(BACKEND + "/auth/" + e.target.value.trim());
-    if (user.ok) {
+    if (allUsers?.includes(e.target.value.trim())) {
       setUserExists(true);
     } else setUserExists(false);
   };
@@ -141,6 +138,11 @@ function Login() {
       .then((response) => response.json())
       .then((count) => {
         setUserCount(count.userCount);
+      });
+      fetch(BACKEND + "/auth/all/all_users")
+      .then((response) => response.json())
+      .then((res) => {
+        setAllUsers(res.users);
       });
   }, [quesCount]);
   return (
