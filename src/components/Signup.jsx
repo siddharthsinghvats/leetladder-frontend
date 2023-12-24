@@ -8,7 +8,7 @@ import { FaRegCheckSquare } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import { GiBrain } from "react-icons/gi";
 
-import CountUp from 'react-countup';
+import CountUp from "react-countup";
 
 const BACKEND = process.env.REACT_APP_BACKEND;
 
@@ -20,6 +20,7 @@ function Login() {
   const [quesCount, setQuesCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
   const [passwordMessage, setPasswordMessage] = useState("");
+  const [usernameMessage, setUsernameMessage] = useState({});
   const [userExists, setUserExists] = useState(false);
   // Password strength checker function
   const checkPasswordStrength = (password) => {
@@ -53,6 +54,33 @@ function Login() {
 
     return `Password should include ${missingCriteria.join(", ")}.`;
   };
+  function checkUsername(username) {
+    const result = {
+      isValid: true,
+      message: "Username is valid.",
+    };
+
+    if (username.length < 5 || username.length > 15) {
+      result.isValid = false;
+      result.message = "Username must be between 5 to 15 characters long.";
+      return result;
+    }
+
+    if (!/^[A-Za-z]/.test(username)) {
+      result.isValid = false;
+      result.message = "Username must start with a letter.";
+      return result;
+    }
+
+    if (!/^[A-Za-z0-9_]+$/.test(username)) {
+      result.isValid = false;
+      result.message =
+        "Username can only contain letters, numbers, and underscores.";
+      return result;
+    }
+
+    return result;
+  }
 
   const handlePassChange = (e) => {
     setPassword(e.target.value);
@@ -60,10 +88,12 @@ function Login() {
     setPasswordMessage(strength);
   };
   const handleUsernameChange = async (e) => {
-    setUsername(e.target.value);
+    setUsername(e.target.value.trim());
+    setUsernameMessage(checkUsername(e.target.value.trim()));
+    if(!usernameMessage.isValid) return;
     if (!e.target.value) return;
     if (e.target.value.length == 0) return;
-    const user = await fetch(BACKEND + "/auth/" + e.target.value);
+    const user = await fetch(BACKEND + "/auth/" + e.target.value.trim());
     if (user.ok) {
       setUserExists(true);
     } else setUserExists(false);
@@ -101,19 +131,18 @@ function Login() {
     }
   };
 
-
-  useEffect(()=>{
-    fetch(BACKEND + '/questions/all_question_count')
-        .then((response) => response.json())
-        .then((count) => {
-          setQuesCount(count.count);
-    });
-    fetch(BACKEND + '/auth/count/total_user')
-        .then((response) => response.json())
-        .then((count) => {
-          setUserCount(count.userCount);
-    });
- },[quesCount])
+  useEffect(() => {
+    fetch(BACKEND + "/questions/all_question_count")
+      .then((response) => response.json())
+      .then((count) => {
+        setQuesCount(count.count);
+      });
+    fetch(BACKEND + "/auth/count/total_user")
+      .then((response) => response.json())
+      .then((count) => {
+        setUserCount(count.userCount);
+      });
+  }, [quesCount]);
   return (
     <>
       {loading ? (
@@ -162,15 +191,25 @@ function Login() {
                   />
                   <span
                     style={{
+                      display: username.length != 0 && !usernameMessage.isValid ? "inline" : "none",
+                      fontSize: "1.2rem",
+                      color: !usernameMessage.isValid ? "#f74d4d" : "#69f74d",
+                    }}
+                  >
+                    {usernameMessage.message}
+                  </span>
+                  {usernameMessage.isValid&&<span
+                    style={{
                       display: username.length != 0 ? "inline" : "none",
                       fontSize: "1.2rem",
-                      color:userExists?"#f74d4d" : "#69f74d"
+                      color: userExists ? "#f74d4d" : "#69f74d",
                     }}
                   >
                     {userExists
                       ? "Username already exists"
                       : "Username available"}
                   </span>
+                }
                   <input
                     type="password"
                     value={password}
@@ -199,8 +238,21 @@ function Login() {
                   <span onClick={() => navigate("/login")}>Sign In</span>
                 </div>
                 <div className="home-stat">
-                    <h2> <CountUp style={{fontSize:"larger",color:"#79fc91"}} end={quesCount}/> total questions </h2>
-                    <h2><CountUp style={{fontSize:"larger",color:"#79fc91"}} end={userCount}/>  users registered </h2>
+                  <h2>
+                    {" "}
+                    <CountUp
+                      style={{ fontSize: "larger", color: "#79fc91" }}
+                      end={quesCount}
+                    />{" "}
+                    total questions{" "}
+                  </h2>
+                  <h2>
+                    <CountUp
+                      style={{ fontSize: "larger", color: "#79fc91" }}
+                      end={userCount}
+                    />{" "}
+                    users registered{" "}
+                  </h2>
                 </div>
               </div>
             </div>

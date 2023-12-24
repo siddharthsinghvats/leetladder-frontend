@@ -90,8 +90,8 @@ function Login() {
                   <input
                     type="text"
                     value={username}
-                    placeholder="Username"
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username (Case Sensitive)"
+                    onChange={(e) => setUsername(e.target.value.trim())}
                   />
                   <input
                     type="password"
